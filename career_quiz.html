@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Career Compass Quiz</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background: #f0f4f7;
+        padding: 0;
+        margin: 0;
+      }
+      .container {
+        max-width: 600px;
+        margin: 50px auto;
+        background: white;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+      }
+      h1,
+      h2 {
+        text-align: center;
+      }
+      .question {
+        margin: 20px 0;
+      }
+      button {
+        background: #007bff;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+      button:hover {
+        background: #0056b3;
+      }
+      .hidden {
+        display: none;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Career Compass Quiz</h1>
+      <div id="quiz">
+        <div class="question" id="q1">
+          <h2>Do you enjoy solving logical or technical problems?</h2>
+          <button onclick="nextQuestion('q1','yes')">Yes</button>
+          <button onclick="nextQuestion('q1','no')">No</button>
+        </div>
+        <div class="question hidden" id="q2">
+          <h2>Do you like helping people with health issues?</h2>
+          <button onclick="nextQuestion('q2','yes')">Yes</button>
+          <button onclick="nextQuestion('q2','no')">No</button>
+        </div>
+        <div class="question hidden" id="q3">
+          <h2>Do you enjoy managing people or organizing projects?</h2>
+          <button onclick="nextQuestion('q3','yes')">Yes</button>
+          <button onclick="nextQuestion('q3','no')">No</button>
+        </div>
+        <div class="question hidden" id="q4">
+          <h2>Do you love art, design, music, or creating things?</h2>
+          <button onclick="nextQuestion('q4','yes')">Yes</button>
+          <button onclick="nextQuestion('q4','no')">No</button>
+        </div>
+        <div class="question hidden" id="q5">
+          <h2>Do you enjoy debating, writing, or explaining ideas?</h2>
+          <button onclick="nextQuestion('q5','yes')">Yes</button>
+          <button onclick="nextQuestion('q5','no')">No</button>
+        </div>
+        <div class="question hidden" id="q6">
+          <h2>
+            Do you prefer working with your hands rather than sitting at a desk?
+          </h2>
+          <button onclick="nextQuestion('q6','yes')">Yes</button>
+          <button onclick="nextQuestion('q6','no')">No</button>
+        </div>
+        <div class="question hidden" id="q7">
+          <h2>Do you like the idea of running your own business?</h2>
+          <button onclick="nextQuestion('q7','yes')">Yes</button>
+          <button onclick="nextQuestion('q7','no')">No</button>
+        </div>
+      </div>
+      <div id="result" class="hidden">
+        <h2>Your Top Career Matches:</h2>
+        <ul id="careerList"></ul>
+      </div>
+    </div>
+    <script>
+      let scores = {
+        engineering: 0,
+        medical: 0,
+        business: 0,
+        creative: 0,
+        law: 0,
+        trades: 0,
+      };
+
+      function nextQuestion(current, answer) {
+        // Assign points
+        switch (current) {
+          case "q1":
+            if (answer === "yes") scores.engineering += 2;
+            break;
+          case "q2":
+            if (answer === "yes") scores.medical += 2;
+            break;
+          case "q3":
+            if (answer === "yes") scores.business += 2;
+            break;
+          case "q4":
+            if (answer === "yes") scores.creative += 2;
+            break;
+          case "q5":
+            if (answer === "yes") scores.law += 2;
+            break;
+          case "q6":
+            if (answer === "yes") scores.trades += 2;
+            break;
+          case "q7":
+            if (answer === "yes") scores.business += 2;
+            break;
+        }
+        // Hide current question
+        document.getElementById(current).classList.add("hidden");
+        // Show next question
+        let next = parseInt(current.substring(1)) + 1;
+        let nextQ = "q" + next;
+        if (document.getElementById(nextQ)) {
+          document.getElementById(nextQ).classList.remove("hidden");
+        } else {
+          showResult();
+        }
+      }
+
+      function showResult() {
+        document.getElementById("quiz").classList.add("hidden");
+        document.getElementById("result").classList.remove("hidden");
+        let sorted = Object.entries(scores).sort((a, b) => b[1] - a[1]);
+        let careerList = document.getElementById("careerList");
+        for (let i = 0; i < 3; i++) {
+          let li = document.createElement("li");
+          let name = sorted[i][0];
+          let desc = "";
+          switch (name) {
+            case "engineering":
+              desc = "Engineering & Tech – Logical, high-demand, good pay";
+              break;
+            case "medical":
+              desc = "Medical & Healthcare – Helping people, respected, stable";
+              break;
+            case "business":
+              desc =
+                "Business & Management – Leadership, high earning, flexible";
+              break;
+            case "creative":
+              desc = "Creative Arts & Media – Fun, creative, freelance options";
+              break;
+            case "law":
+              desc = "Law & Legal – Prestigious, logical, debate-oriented";
+              break;
+            case "trades":
+              desc = "Skilled Trades – Practical, hands-on, always in demand";
+              break;
+          }
+          li.textContent = desc;
+          careerList.appendChild(li);
+        }
+      }
+    </script>
+  </body>
+</html>
